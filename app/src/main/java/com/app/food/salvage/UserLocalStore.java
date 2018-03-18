@@ -3,9 +3,6 @@ package com.app.food.salvage;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-/**
- * Created by AGM TAZIM on 12/29/2015.
- */
 public class UserLocalStore {
 
     //Declaration
@@ -14,7 +11,6 @@ public class UserLocalStore {
 
     //Constructor
     public  UserLocalStore(Context ctx){
-
         userDB = ctx.getSharedPreferences(userDBName, 0);
     }
 

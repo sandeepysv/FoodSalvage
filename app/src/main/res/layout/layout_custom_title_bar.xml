@@ -23,7 +23,7 @@
             android:id="@+id/tvTitleDeliverText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Orders \n Delivered Today"
+            android:text="Food Salvage\nDelivered Today"
             android:textSize="8.4pt"
             android:textColor="#5B6B7C"
             android:gravity="left"
@@ -38,10 +38,12 @@
         android:layout_gravity="right">
 
         <ImageView
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="5dp"
             android:id="@+id/ivTitleLogo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/logo_title" />
+            android:layout_width="80dp"
+            android:layout_height="60dp"
+            android:background="@drawable/fs" />
 
     </RelativeLayout>
 

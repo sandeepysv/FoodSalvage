@@ -14,30 +14,17 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="0dp"
         android:gravity="center"
         android:layout_gravity="center">
 
-        <!--<ImageView-->
-            <!--android:id="@+id/logoLogin"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:foregroundGravity="center"-->
-            <!--android:src="@drawable/logo" />-->
-
-        <TextView
+        <ImageView
             android:id="@+id/logoLogin"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
-            android:fontFamily="casual"
-            android:text="Food Salvage"
-            android:textColor="#AFAEAE"
-            android:textSize="30sp"
-            android:textStyle="normal|bold" />
+            android:foregroundGravity="center"
+            android:src="@drawable/fs" />
 
         <EditText
             android:id="@+id/etLoginUserEmail"
@@ -47,14 +34,15 @@
             android:drawableLeft="@drawable/icon_username"
             android:drawablePadding="15dp"
             android:hint="Email"
-            android:textSize="12dp"
+            android:textSize="12sp"
             android:textColorHint="#AFAEAE"
             android:textColor="#AFAEAE"
             android:inputType="textEmailAddress"
             android:paddingBottom="15dp"
             android:paddingLeft="30dp"
             android:layout_marginBottom="5dp"
-            android:layout_below="@+id/logoLogin" />
+            android:layout_below="@+id/logoLogin"
+            tools:ignore="HardcodedText,RtlHardcoded,RtlSymmetry" />
 
         <EditText
             android:id="@+id/etLoginPassword"
@@ -63,20 +51,35 @@
             android:drawableLeft="@drawable/icon_password"
             android:drawablePadding="15dp"
             android:hint="Password"
-            android:textSize="12dp"
+            android:textSize="12sp"
             android:textColorHint="#AFAEAE"
             android:textColor="#AFAEAE"
             android:inputType="textPassword"
             android:paddingBottom="15dp"
             android:paddingLeft="30dp"
             android:layout_marginBottom="5dp"
-            android:layout_below="@+id/etLoginUserEmail"/>
+            android:layout_below="@+id/etLoginUserEmail"
+            android:drawableStart="@drawable/icon_password"
+            tools:ignore="HardcodedText,RtlHardcoded,RtlSymmetry" />
+
+        <TextView
+            android:id="@+id/tvForgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etLoginPassword"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:text="Forgot Password?"
+            android:textColor="#AFAEAE"
+            android:layout_margin="10dp"
+            android:textSize="12sp"
+            tools:ignore="HardcodedText,RtlHardcoded" />
 
         <RadioGroup
             android:id="@+id/rbgLoginUserType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/etLoginPassword"
+            android:layout_below="@+id/tvForgotPassword"
             android:gravity="center"
             android:checkedButton="@+id/rbUserRider"
             android:orientation="horizontal"
@@ -88,8 +91,9 @@
                 android:layout_height="wrap_content"
                 android:text="Donor"
                 android:textColor="#AFAEAE"
-                android:textSize="12dp"
-                android:paddingLeft="5dp" />
+                android:textSize="12sp"
+                android:paddingLeft="5dp"
+                tools:ignore="HardcodedText,RtlHardcoded,RtlSymmetry" />
 
             <RadioButton
                 android:id="@+id/rbUserClient"
@@ -97,35 +101,40 @@
                 android:layout_height="wrap_content"
                 android:text="Charity"
                 android:textColor="#AFAEAE"
-                android:textSize="12dp"
-                android:paddingLeft="5dp"/>
+                android:textSize="12sp"
+                android:paddingLeft="5dp"
+                tools:ignore="HardcodedText,RtlHardcoded,RtlSymmetry" />
 
         </RadioGroup>
 
 
-
         <Button
             android:id="@+id/btnLoginSubmit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="SIGN IN"
-            android:textSize="16dp"
-            android:textColor="#ffffff"
-            android:background="#4CA1FE"
-            android:layout_below="@+id/rbgLoginUserType"
-            android:layout_marginTop="20dp"/>
-
-        <TextView
-            android:id="@+id/tvForgotPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Forgot Password?"
-            android:textSize="12dp"
-            android:textColor="#AFAEAE"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="20dp"
-            android:layout_below="@+id/btnLoginSubmit"
-            android:layout_alignRight="@+id/btnLoginSubmit"/>
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/rbgLoginUserType"
+            android:layout_marginTop="23dp"
+            android:background="#558B2F"
+            android:text="SIGN IN"
+            android:textColor="#ffffff"
+            android:textSize="16sp"
+            tools:ignore="HardcodedText" />
+
+        <Button
+            android:id="@+id/btnSignUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/btnLoginSubmit"
+            android:layout_alignBottom="@+id/btnLoginSubmit"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="#913a05"
+            android:text="SIGN UP"
+            android:textColor="#ffffff"
+            android:textSize="16sp"
+            tools:ignore="HardcodedText" />
 
     </RelativeLayout>
 

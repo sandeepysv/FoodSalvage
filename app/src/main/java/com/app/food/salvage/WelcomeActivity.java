@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 public class WelcomeActivity extends AppCompatActivity {
 
-    //Decalre variable and object
+    //Declare variable and object
     ViewPager welcomeViewPager;
     SplashPagerAdapter welcomeViewPagerAdapter;
     Context ctx;

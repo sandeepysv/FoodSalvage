@@ -1,5 +1,6 @@
 package com.app.food.salvage;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -47,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     RadioGroup rbgUserType;
     ImageView ivLogo;
     Drawable resizedImage;
-    Button btnLoginSubmit;
+    Button btnLoginSubmit,btnSignUp;
     private ProgressDialog pDialog;
     String userEmail, userPassword;
     int checkedUserId;
@@ -59,11 +60,12 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        //Initilize variable and object
+        //Initialize variable and object
         etUserEmail = (EditText) findViewById(R.id.etLoginUserEmail);
         etPassword = (EditText) findViewById(R.id.etLoginPassword);
         ivLogo = (ImageView) findViewById(R.id.logoLogin);
         btnLoginSubmit = (Button) findViewById(R.id.btnLoginSubmit);
+        btnSignUp = (Button) findViewById(R.id.btnSignUp);
         rbgUserType = (RadioGroup) findViewById(R.id.rbgLoginUserType);
 
         // Progress dialog
@@ -103,8 +105,57 @@ public class LoginActivity extends AppCompatActivity {
                 userPassword = etPassword.getText().toString().trim();
 
                 //Login for validation
+                if(userEmail.isEmpty() || userPassword.isEmpty()) {
+                    Toast.makeText(LoginActivity.this, "Enter E-Mail and Password", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    //Check user type
+                    checkedUserId = rbgUserType.getCheckedRadioButtonId();
+                    connectivityDetector = new ConnectivityDetector(getBaseContext());
+
+                    if(checkedUserId == R.id.rbUserRider){
+                        if(connectivityDetector.checkConnectivityStatus()){
+                            checkRiderLogin(userEmail, userPassword);
+                            Toast.makeText(LoginActivity.this, "Donor", Toast.LENGTH_SHORT).show();
+                        }else{
+                            connectivityDetector.showAlertDialog(LoginActivity.this, "Login Failed","No internet connection");
+                        }
+
+                    } else if(checkedUserId == R.id.rbUserClient){
+                        if(connectivityDetector.checkConnectivityStatus()){
+                            checkClientLogin(userEmail, userPassword);
+                            Toast.makeText(LoginActivity.this, "Charity", Toast.LENGTH_SHORT).show();
+                        }else{
+                            connectivityDetector.showAlertDialog(LoginActivity.this, "Login Failed","No internet connection");
+                        }
+                    }
+                } //End of else
+
+            }// End of onClick
+        });
+
+        btnSignUp.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    v.getBackground().setAlpha(150);
+                }else if(event.getAction() == MotionEvent.ACTION_UP){
+                    v.getBackground().setAlpha(255);
+                }
+                return false;
+            }
+        });
+
+        //Submit login form
+        btnSignUp.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userEmail = etUserEmail.getText().toString().trim();
+                userPassword = etPassword.getText().toString().trim();
+
+                //Login for validation
                 if(userEmail.isEmpty() || userPassword.isEmpty()){
-                    Toast.makeText(LoginActivity.this, "Enter email and password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Enter E-mail and Password", Toast.LENGTH_SHORT).show();
                 }else{
                     //Check user type
                     checkedUserId = rbgUserType.getCheckedRadioButtonId();
@@ -113,7 +164,7 @@ public class LoginActivity extends AppCompatActivity {
                     if(checkedUserId == R.id.rbUserRider){
                         if(connectivityDetector.checkConnectivityStatus()){
                             checkRiderLogin(userEmail, userPassword);
-                            Toast.makeText(LoginActivity.this, "Rider", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Donor", Toast.LENGTH_SHORT).show();
                         }else{
                             connectivityDetector.showAlertDialog(LoginActivity.this, "Login Failed","No internet connection");
                         }
@@ -121,7 +172,7 @@ public class LoginActivity extends AppCompatActivity {
                     } else if(checkedUserId == R.id.rbUserClient){
                         if(connectivityDetector.checkConnectivityStatus()){
                             checkClientLogin(userEmail, userPassword);
-                            Toast.makeText(LoginActivity.this, "Client", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Charity", Toast.LENGTH_SHORT).show();
                         }else{
                             connectivityDetector.showAlertDialog(LoginActivity.this, "Login Failed","No internet connection");
                         }
