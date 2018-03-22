@@ -52,7 +52,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:layout_gravity="center"
-                android:layout_marginRight="0dp">
+                android:layout_marginRight="0dp"
+                tools:ignore="RtlHardcoded"
+                android:layout_marginEnd="0dp">
 
                 <ImageView
                     android:layout_marginTop="2dp"
@@ -72,34 +74,115 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_profile"
             android:paddingTop="10dp"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tvProfileWelcome"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Welcome"
+                android:textAlignment="center"
                 android:textColor="#fff"
                 android:textSize="8.77pt"
                 tools:ignore="HardcodedText" />
 
             <TextView
                 android:id="@+id/tvProfileName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/tvProfileWelcome"
                 android:text="Name"
+                android:textAlignment="center"
                 android:textColor="#fff"
                 android:textSize="12.02pt"
-                android:layout_marginTop="7dp"
-                android:layout_below="@+id/tvProfileWelcome"
                 tools:ignore="HardcodedText,ObsoleteLayoutParam" />
-        </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvDetails"
+                android:layout_marginTop="50dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/tvProfileName"
+                android:padding="8dp"
+                android:text="Enter Food Details :"
+                android:textColor="#fff"
+                android:textSize="10.02pt"
+                tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+
+            <EditText
+                android:id="@+id/etPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:drawablePadding="15dp"
+                android:hint="Phone No."
+                android:textSize="12sp"
+                android:textColorHint="#AFAEAE"
+                android:textColor="#AFAEAE"
+                android:inputType="phone"
+                android:paddingBottom="15dp"
+                android:paddingLeft="30dp"
+                android:layout_marginBottom="5dp"
+                android:layout_below="@+id/tvDetails"
+                tools:ignore="HardcodedText,RtlHardcoded,RtlSymmetry" />
+
+            <EditText
+                android:id="@+id/etRegion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="15dp"
+                android:hint="Food Available Region"
+                android:textSize="12sp"
+                android:textColorHint="#AFAEAE"
+                android:textColor="#AFAEAE"
+                android:inputType="textPostalAddress"
+                android:paddingBottom="15dp"
+                android:paddingLeft="30dp"
+                android:layout_marginBottom="5dp"
+                android:layout_below="@+id/etPhone"
+                tools:ignore="HardcodedText,RtlHardcoded,RtlSymmetry" />
+
+            <EditText
+                android:id="@+id/etFresh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="15dp"
+                android:hint="Freshness of Food"
+                android:textSize="12sp"
+                android:textColorHint="#AFAEAE"
+                android:textColor="#AFAEAE"
+                android:inputType="text"
+                android:paddingBottom="15dp"
+                android:paddingLeft="30dp"
+                android:layout_marginBottom="5dp"
+                android:layout_below="@+id/etRegion"
+                tools:ignore="HardcodedText,RtlHardcoded,RtlSymmetry" />
+
+            <Button
+                android:id="@+id/btnPost"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="Make Food Post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:padding="8dp"
+                android:background="#558B2F"
+                android:textColor="#ffffff"
+                android:textSize="16sp"
+                tools:ignore="HardcodedText" />
+
+
+        </RelativeLayout>
 
     </ScrollView>
 

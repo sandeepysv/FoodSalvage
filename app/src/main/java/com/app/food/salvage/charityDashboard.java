@@ -17,7 +17,7 @@ public class charityDashboard extends AppCompatActivity {
         email = (TextView) findViewById(R.id.tvProfileName);
         notify = (TextView) findViewById(R.id.tvNotify);
 
-        email.setText("Logged in Successfully!");
+        email.setText("Charity Member");
 
     }
 }

@@ -73,17 +73,17 @@ public class LoginActivity extends AppCompatActivity {
         pDialog.setCancelable(false);
 
         //Check Already Logged in User
-//        UserLocalStore sessionManager = new UserLocalStore(this);
-//        if(sessionManager.loggedInUser() == "donor" && sessionManager.isRiderLoggedIn()) {
-//            Intent goRiderProfileActivity = new Intent(LoginActivity.this, RiderDashboardActivity.class);
-//            startActivity(goRiderProfileActivity);
-//            finish();
-//        }
-//        else if(sessionManager.loggedInUser() == "charity" && sessionManager.isClientLoggedIn()) {
-//            Intent goClientProfileActivity = new Intent(LoginActivity.this, ClientDashboardActivity.class);
-//            startActivity(goClientProfileActivity);
-//            finish();
-//        }
+        UserLocalStore sessionManager = new UserLocalStore(this);
+        if(sessionManager.loggedInUser() == "donor" && sessionManager.isRiderLoggedIn()) {
+            Intent goRiderProfileActivity = new Intent(LoginActivity.this, RiderDashboardActivity.class);
+            startActivity(goRiderProfileActivity);
+            finish();
+        }
+        else if(sessionManager.loggedInUser() == "charity" && sessionManager.isClientLoggedIn()) {
+            Intent goClientProfileActivity = new Intent(LoginActivity.this, ClientDashboardActivity.class);
+            startActivity(goClientProfileActivity);
+            finish();
+        }
 
         //Change button color when click
         btnLoginSubmit.setOnTouchListener(new OnTouchListener() {
