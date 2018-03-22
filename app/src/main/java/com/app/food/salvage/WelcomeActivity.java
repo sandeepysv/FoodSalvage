@@ -15,7 +15,6 @@ public class WelcomeActivity extends AppCompatActivity {
     ViewPager welcomeViewPager;
     SplashPagerAdapter welcomeViewPagerAdapter;
     Context ctx;
-    //TextView tvSkipPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,17 +23,16 @@ public class WelcomeActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         //Initialize variable
-       // tvSkipPager = (TextView) findViewById(R.id.vewPagerSkip);
         welcomeViewPager =(ViewPager) findViewById(R.id.welcome_view_pager);
         welcomeViewPagerAdapter = new SplashPagerAdapter(this);
         welcomeViewPager.setAdapter(welcomeViewPagerAdapter);
 
         //
         ctx = this;
-        final SharedPreferences prefs = ctx.getSharedPreferences(
-                WelcomeActivity.class.getSimpleName(), Context.MODE_PRIVATE);
-        String registrationId = prefs.getString("regId", "");
-        Toast.makeText(ctx, "REG ID :"+registrationId, Toast.LENGTH_LONG).show();
+//        final SharedPreferences prefs = ctx.getSharedPreferences(
+//                WelcomeActivity.class.getSimpleName(), Context.MODE_PRIVATE);
+//        String registrationId = prefs.getString("regId", "");
+//        Toast.makeText(ctx, "REG ID :"+registrationId, Toast.LENGTH_LONG).show();
 
 
         ViewPager.OnPageChangeListener listenerWelcomeViewPager = new ViewPager.OnPageChangeListener() {
@@ -42,7 +40,7 @@ public class WelcomeActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int pageNumber) {
                 // TODO Auto-generated method stub
-               if(pageNumber == 2){
+               if(pageNumber == 1){
                    goLoginActivity();
                }
 

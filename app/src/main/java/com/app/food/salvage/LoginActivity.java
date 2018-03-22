@@ -1,6 +1,5 @@
 package com.app.food.salvage;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -10,8 +9,6 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
@@ -23,12 +20,15 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -68,17 +68,18 @@ public class LoginActivity extends AppCompatActivity {
         btnSignUp = (Button) findViewById(R.id.btnSignUp);
         rbgUserType = (RadioGroup) findViewById(R.id.rbgLoginUserType);
 
-        // Progress dialog
+        // Progress Dialog
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
-        //Check already logged in user
+        //Check Already Logged in User
         UserLocalStore sessionManager = new UserLocalStore(this);
-        if(sessionManager.loggedInUser() == "rider" && sessionManager.isRiderLoggedIn()){
+        if(sessionManager.loggedInUser() == "donor" && sessionManager.isRiderLoggedIn()) {
             Intent goRiderProfileActivity = new Intent(LoginActivity.this, RiderDashboardActivity.class);
             startActivity(goRiderProfileActivity);
             finish();
-        }else if(sessionManager.loggedInUser() == "client" && sessionManager.isClientLoggedIn()){
+        }
+        else if(sessionManager.loggedInUser() == "charity" && sessionManager.isClientLoggedIn()) {
             Intent goClientProfileActivity = new Intent(LoginActivity.this, ClientDashboardActivity.class);
             startActivity(goClientProfileActivity);
             finish();
@@ -101,34 +102,45 @@ public class LoginActivity extends AppCompatActivity {
         btnLoginSubmit.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                userEmail = etUserEmail.getText().toString().trim();
-                userPassword = etPassword.getText().toString().trim();
+                userEmail = etUserEmail.getText().toString();
+                userPassword = etPassword.getText().toString();
 
                 //Login for validation
-                if(userEmail.isEmpty() || userPassword.isEmpty()) {
-                    Toast.makeText(LoginActivity.this, "Enter E-Mail and Password", Toast.LENGTH_SHORT).show();
+                if(userEmail.isEmpty()) {
+                    Toast.makeText(LoginActivity.this, "Enter E-Mail Address", Toast.LENGTH_SHORT).show();
                 }
-                else {
+                else if(userPassword.isEmpty()) {
+                    Toast.makeText(LoginActivity.this, "Enter Password", Toast.LENGTH_SHORT).show();
+                }
+                else if(!(android.util.Patterns.EMAIL_ADDRESS.matcher(userEmail).matches())) {
+                    Toast.makeText(LoginActivity.this, "Invalid Email", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
                     //Check user type
                     checkedUserId = rbgUserType.getCheckedRadioButtonId();
                     connectivityDetector = new ConnectivityDetector(getBaseContext());
 
-                    if(checkedUserId == R.id.rbUserRider){
+                    if(checkedUserId == R.id.rbDonor){
                         if(connectivityDetector.checkConnectivityStatus()){
-                            checkRiderLogin(userEmail, userPassword);
                             Toast.makeText(LoginActivity.this, "Donor", Toast.LENGTH_SHORT).show();
-                        }else{
-                            connectivityDetector.showAlertDialog(LoginActivity.this, "Login Failed","No internet connection");
+                            checkRiderLogin(userEmail, userPassword);
+                        }
+                        else{
+                            connectivityDetector.showAlertDialog(LoginActivity.this, "Login Failed","No Internet Connection");
                         }
 
-                    } else if(checkedUserId == R.id.rbUserClient){
-                        if(connectivityDetector.checkConnectivityStatus()){
-                            checkClientLogin(userEmail, userPassword);
-                            Toast.makeText(LoginActivity.this, "Charity", Toast.LENGTH_SHORT).show();
-                        }else{
-                            connectivityDetector.showAlertDialog(LoginActivity.this, "Login Failed","No internet connection");
-                        }
                     }
+                    else
+                        if(checkedUserId == R.id.rbCharity) {
+                            if(connectivityDetector.checkConnectivityStatus()) {
+                                checkClientLogin(userEmail, userPassword);
+                                Toast.makeText(LoginActivity.this, "Charity", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                connectivityDetector.showAlertDialog(LoginActivity.this, "Login Failed","No Internet Connection");
+                            }
+                        }
                 } //End of else
 
             }// End of onClick
@@ -150,171 +162,56 @@ public class LoginActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                userEmail = etUserEmail.getText().toString().trim();
-                userPassword = etPassword.getText().toString().trim();
-
-                //Login for validation
-                if(userEmail.isEmpty() || userPassword.isEmpty()){
-                    Toast.makeText(LoginActivity.this, "Enter E-mail and Password", Toast.LENGTH_SHORT).show();
-                }else{
-                    //Check user type
-                    checkedUserId = rbgUserType.getCheckedRadioButtonId();
-                    connectivityDetector = new ConnectivityDetector(getBaseContext());
-
-                    if(checkedUserId == R.id.rbUserRider){
-                        if(connectivityDetector.checkConnectivityStatus()){
-                            checkRiderLogin(userEmail, userPassword);
-                            Toast.makeText(LoginActivity.this, "Donor", Toast.LENGTH_SHORT).show();
-                        }else{
-                            connectivityDetector.showAlertDialog(LoginActivity.this, "Login Failed","No internet connection");
-                        }
-
-                    } else if(checkedUserId == R.id.rbUserClient){
-                        if(connectivityDetector.checkConnectivityStatus()){
-                            checkClientLogin(userEmail, userPassword);
-                            Toast.makeText(LoginActivity.this, "Charity", Toast.LENGTH_SHORT).show();
-                        }else{
-                            connectivityDetector.showAlertDialog(LoginActivity.this, "Login Failed","No internet connection");
-                        }
-                    }
-                } //End of else
-
+                Intent intent = new Intent(LoginActivity.this, SignUp.class);
+                startActivity(intent);
             }// End of onClick
         });
 
     } //End of onCreate
 
-
-    //Not used
-    //Resizeing Image function
-    public Drawable ResizeImage (int imageID) {
-    //Get device dimensions
-        Display display = getWindowManager().getDefaultDisplay();
-        double deviceWidth = display.getWidth();
-
-        BitmapDrawable bd=(BitmapDrawable) this.getResources().getDrawable(imageID);
-        double imageHeight = bd.getBitmap().getHeight();
-        double imageWidth = bd.getBitmap().getWidth();
-
-        double ratio = deviceWidth / imageWidth;
-        int newImageHeight = (int) (imageHeight * ratio);
-
-        Bitmap bMap = BitmapFactory.decodeResource(getResources(), imageID);
-        Drawable drawable = new BitmapDrawable(this.getResources(),getResizedBitmap(bMap,newImageHeight,(int) deviceWidth));
-
-        return drawable;
-    }
-
-
-    //Not used
-    /************************ Resize Bitmap *********************************/
-    public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
-
-        int width = bm.getWidth();
-        int height = bm.getHeight();
-
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-
-// create a matrix for the manipulation
-        Matrix matrix = new Matrix();
-
-// resize the bit map
-        matrix.postScale(scaleWidth, scaleHeight);
-
-// recreate the new Bitmap
-        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
-
-        return resizedBitmap;
-    }
-
-
-    //Check Rider Login
+    //Check Donor Login
     private void checkRiderLogin(final String email, final String password) {
-        // Tag used to cancel the request
-        String tag_string_req = "req_login";
-        String eEmail = null;
-        String ePassword = null;
-        try {
-            eEmail = URLEncoder.encode(email, "UTF-8");
-            ePassword = URLEncoder.encode(password, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
 
-        String serverAddress = "http://dev.intaresta.com/food/rest_controller/check_rider/"+eEmail+"/"+ePassword;
+        String serverAddress = "http://192.168.43.214/foodsalvage/log_in/index.php";
 
         pDialog.setMessage("Please Wait....");
-        pDialog.setTitle("Proccessing");
+        pDialog.setTitle("Processing");
         pDialog.setCancelable(false);
         showDialog();
 
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("email", email);
-        params.put("password", password);
-
-        JsonObjectRequest checkRiderRequest = new JsonObjectRequest(Request.Method.POST,
-                serverAddress, new JSONObject(params), new Response.Listener<JSONObject>() {
+        StringRequest checkRiderRequest = new StringRequest(Request.Method.POST,
+                serverAddress, new Response.Listener<String>() {
 
             @Override
-            public void onResponse(JSONObject jObj) {
+            public void onResponse(String response) {
                // Log.d("Login Response", "Login Response: " + response.toString());
                 hideDialog();
 
                 try {
-
-                    //JSONObject jObj = response.getJSONObject(1);
-                    boolean error = jObj.getBoolean("error");
-
-                    // Check for error node in json
-                    if (!error) {
-                        // user successfully logged in
-                        // Create login session
-                       // session.setLogin(true);
-
-                        int id = jObj.getInt("id");
-                        int status = jObj.getInt("status");
-                        String name = jObj.getString("name");
-                        String email = jObj.getString("email");
-                        String password = jObj.getString("password");
-                        String bikeNumber = jObj.getString("bike_number");
-                        String contactNumber = jObj.getString("contact_number");
-                        String createdDate = jObj.getString("created_date");
-                        String profilePicture = jObj.getString("profile_picture");
-
-                        Toast.makeText(getApplicationContext(),
-                                "Rider Name : "+name,  Toast.LENGTH_LONG).show();
-
-                        //Entering rider data to rider object
-                        Rider loggedInRider = new Rider();
-                        loggedInRider.setId(id);
-                        loggedInRider.setEmail(email);
-                        loggedInRider.setPasword(password);
-                        loggedInRider.setName(name);
-                        loggedInRider.setBikeNumber(bikeNumber);
-                        loggedInRider.setContactNumber(contactNumber);
-                        loggedInRider.setProfilePicture(profilePicture);
-                        loggedInRider.setStatus(status);
+                    JSONArray jsonArray = new JSONArray(response);
+                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+                    String code = jsonObject.getString("code");
+                    if(code.equals("login_failed")) {
+                        Toast.makeText(LoginActivity.this, "Login Failed!", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                        Charity loggedInCharity = new Charity();
+                        loggedInCharity.setEmail(jsonObject.getString("email"));
+                        loggedInCharity.setPassword(jsonObject.getString("password"));
+                        loggedInCharity.setPhone(jsonObject.getString("phone"));
+                        loggedInCharity.setAddress(jsonObject.getString("address"));
+                        loggedInCharity.setCategory("Donor");
 
                         UserLocalStore userLocalStore = new UserLocalStore(LoginActivity.this);
-                        userLocalStore.storeRiderData(loggedInRider);
-                        userLocalStore.setRiderLoggedIn(true);
+                        userLocalStore.storeClientData(loggedInCharity);
+                        userLocalStore.setClientLoggedIn(true);
 
-                        // Launch main activity
                         goRiderDashboardActivity();
-                    } else {
-                        //int i=0;
-                        // Error in login. Get the error message
-                        String errorMsg = jObj.getString("error_message");
-                        Toast.makeText(getApplicationContext(),
-                               "Error Message : "+errorMsg,  Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
-                    // JSON error
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Json catch error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
-
             }
         }, new Response.ErrorListener() {
 
@@ -325,16 +222,20 @@ public class LoginActivity extends AppCompatActivity {
                        " Error Response: "+ error.getMessage(), Toast.LENGTH_LONG).show();
                 hideDialog();
             }
-        });
-
-        // Adding request to request queue
-        //AppController.getInstance().addToRequestQueue(strReq);
-        Volley.newRequestQueue(this).add(checkRiderRequest);
-
+        })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("email",userEmail);
+                params.put("password",userPassword);
+                return params;
+            }
+        };
+        MySingleton.getInstance(LoginActivity.this).addToRequestque(checkRiderRequest);
     }
 
-
-    //Check Client Login
+    //Check Charity Login
     private void checkClientLogin(final String email, final String password) {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
@@ -347,10 +248,10 @@ public class LoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        String serverAddress = "http://dev.intaresta.com/food/rest_controller/check_client/"+eEmail+"/"+ePassword;
+        String serverAddress = "http://localhost/foodsalvage/check_charity/"+eEmail+"/"+ePassword;
 
         pDialog.setMessage("Please Wait....");
-        pDialog.setTitle("Proccessing");
+        pDialog.setTitle("Processing");
         pDialog.setCancelable(false);
         showDialog();
 
@@ -374,47 +275,28 @@ public class LoginActivity extends AppCompatActivity {
                     // Check for error node in json
                     if (!error) {
                         // user successfully logged in
-                        int id = jObj.getInt("id");
                         String email = jObj.getString("email");
                         String password = jObj.getString("password");
-                        String comapnyName = jObj.getString("company_name");
-                        String companyPostalCode = jObj.getString("company_postal_code");
-                        String companyUnitNumber = jObj.getString("company_unit_number");
-                        String location = jObj.getString("location");
-                        String contactNumber = jObj.getString("contact_number");
-                        String billingAddress = jObj.getString("billing_address");
-                        String contactPersonName = jObj.getString("contact_person_name");
-                        String contactPersonNumber = jObj.getString("contact_person_number");
-                        String contactPersonEmail = jObj.getString("contact_person_email");
-                        String createdDate = jObj.getString("created_date");
-                        String clientType = jObj.getString("client_type");
+                        String phone = jObj.getString("phone");
+                        String address = jObj.getString("address");
+                        String category = jObj.getString("category");
 
                         Toast.makeText(getApplicationContext(),
-                                "Client Name : "+comapnyName,  Toast.LENGTH_LONG).show();
+                                "Charity : "+email,  Toast.LENGTH_LONG).show();
 
                         //Entering rider data to rider object
-                        Client loggedInClient = new Client();
-
-                        loggedInClient.setId(id);
-                        loggedInClient.setEmail(email);
-                        loggedInClient.setPassword(password);
-                        loggedInClient.setCompanyName(comapnyName);
-                        loggedInClient.setCompanyPostalCode(companyPostalCode);
-                        loggedInClient.setCompanyUnitNumber(companyUnitNumber);
-                        loggedInClient.setLocation(location);
-                        loggedInClient.setBillingAddress(billingAddress);
-                        loggedInClient.setContactNumber(contactNumber);
-                        loggedInClient.setContactPersonName(contactPersonName);
-                        loggedInClient.setContactPersonEmail(contactPersonEmail);
-                        loggedInClient.setContactPersonNumber(contactPersonNumber);
-                        loggedInClient.setCreatedDate(createdDate);
-                        loggedInClient.setClientType(clientType);
+                        Charity loggedInCharity = new Charity();
+                        loggedInCharity.setEmail(email);
+                        loggedInCharity.setPassword(password);
+                        loggedInCharity.setPhone(phone);
+                        loggedInCharity.setAddress(address);
+                        loggedInCharity.setCategory(category);
 
                         UserLocalStore userLocalStore = new UserLocalStore(LoginActivity.this);
-                        userLocalStore.storeClientData(loggedInClient);
+                        userLocalStore.storeClientData(loggedInCharity);
                         userLocalStore.setClientLoggedIn(true);
 
-                        // Launch Client dahsboard  activity
+                        // Launch Charity dashboard  activity
                         goClientDashboardActivity();
                     } else {
                         //int i=0;
@@ -447,7 +329,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    //Show Diaslog
+    //Show Dialog
     private void showDialog() {
         if (!pDialog.isShowing())
             pDialog.show();
@@ -460,15 +342,15 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    //Go Rider dashboard  Activityb
+    //Go Donor Dashboard Activity
     public void goRiderDashboardActivity(){
         Intent intent = new Intent(LoginActivity.this,
-                RiderDashboardActivity.class);
+                Dashboard.class);
         startActivity(intent);
         finish();
     }
 
-    //Go Rider dashboard  Activityb
+    //Go Charity Dashboard Activity
     public void goClientDashboardActivity(){
         Intent intent = new Intent(LoginActivity.this,
                 ClientDashboardActivity.class);

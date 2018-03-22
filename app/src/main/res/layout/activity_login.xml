@@ -10,7 +10,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        tools:ignore="UselessParent">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -24,7 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:foregroundGravity="center"
-            android:src="@drawable/fs" />
+            android:src="@drawable/fs"
+            tools:ignore="ContentDescription" />
 
         <EditText
             android:id="@+id/etLoginUserEmail"
@@ -62,31 +64,31 @@
             android:drawableStart="@drawable/icon_password"
             tools:ignore="HardcodedText,RtlHardcoded,RtlSymmetry" />
 
-        <TextView
-            android:id="@+id/tvForgotPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/etLoginPassword"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:text="Forgot Password?"
-            android:textColor="#AFAEAE"
-            android:layout_margin="10dp"
-            android:textSize="12sp"
-            tools:ignore="HardcodedText,RtlHardcoded" />
+        <!--<TextView-->
+            <!--android:id="@+id/tvForgotPassword"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@id/etLoginPassword"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:text="Forgot Password?"-->
+            <!--android:textColor="#AFAEAE"-->
+            <!--android:layout_margin="10dp"-->
+            <!--android:textSize="12sp"-->
+            <!--tools:ignore="HardcodedText,RtlHardcoded" />-->
 
         <RadioGroup
             android:id="@+id/rbgLoginUserType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvForgotPassword"
+            android:layout_below="@+id/etLoginPassword"
             android:gravity="center"
-            android:checkedButton="@+id/rbUserRider"
+            android:checkedButton="@+id/rbDonor"
             android:orientation="horizontal"
             android:dividerPadding="10dp">
 
             <RadioButton
-                android:id="@+id/rbUserRider"
+                android:id="@+id/rbDonor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Donor"
@@ -96,7 +98,7 @@
                 tools:ignore="HardcodedText,RtlHardcoded,RtlSymmetry" />
 
             <RadioButton
-                android:id="@+id/rbUserClient"
+                android:id="@+id/rbCharity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Charity"

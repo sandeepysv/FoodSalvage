@@ -45,7 +45,7 @@ public class AcceptedOrderActivity extends AppCompatActivity {
         riderImageSrc = iData.getString("rider_profile_picture");
         uniqueNotificationId = iData.getInt("unique_notification_id_for_client");
 
-        tvRiderName.setText("Rider - "+riderName);
+        tvRiderName.setText("Donor - "+riderName);
         tvRiderContactNumber.setText("Contact No - " + riderContactNumber);
         //ivRiderPicture.setImageURI(Uri.parse(riderImageSrc));
 
@@ -54,7 +54,7 @@ public class AcceptedOrderActivity extends AppCompatActivity {
         //Cancel Notification
         rNotificationManager.cancel(uniqueNotificationId);
 
-        //Fetch Rider Image from server
+        //Fetch Donor Image from server
         try {
 
             URL myFileUrl = new URL(riderImageSrc);

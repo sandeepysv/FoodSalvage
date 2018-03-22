@@ -14,101 +14,65 @@ public class UserLocalStore {
         userDB = ctx.getSharedPreferences(userDBName, 0);
     }
 
-    //Store rider data in sharedpreference
-    public void storeRiderData(Rider rider){
+    //Store donor data in shared preference
+    public void storeRiderData(Donor donor){
         SharedPreferences.Editor riderSpEditor = userDB.edit();
-        riderSpEditor.putInt("id", rider.getId());
-        riderSpEditor.putInt("status", rider.getStatus());
-        riderSpEditor.putString("email", rider.getEmail());
-        riderSpEditor.putString("password", rider.getPassword());
-        riderSpEditor.putString("name", rider.getName());
-        riderSpEditor.putString("bikeNmuber", rider.getBikeNumber());
-        riderSpEditor.putString("contactNumber", rider.getContactNumber());
-        riderSpEditor.putString("profilePicture", rider.getContactNumber());
+        riderSpEditor.putString("email", donor.getEmail());
+        riderSpEditor.putString("password", donor.getPassword());
+        riderSpEditor.putString("phone", donor.getPhone());
+        riderSpEditor.putString("address", donor.getAddress());
+        riderSpEditor.putString("category", donor.getCategory());
         riderSpEditor.commit();
     }
 
-    //Store client  data in sharedpreference
-    public void storeClientData(Client client){
+    //Store charity  data in shared preference
+    public void storeClientData(Charity charity){
         SharedPreferences.Editor clientSpEditor = userDB.edit();
-        clientSpEditor.putInt("id", client.getId());
-        clientSpEditor.putString("companyName", client.getCompanyName());
-        clientSpEditor.putString("email", client.getEmail());
-        clientSpEditor.putString("password", client.getPassword());
-        clientSpEditor.putString("companyPostalCode", client.getCompanyPostalCode());
-        clientSpEditor.putString("companyUnitNumber", client.getCompanyUnitNumber());
-        clientSpEditor.putString("location", client.getLocation());
-        clientSpEditor.putString("contactNumber", client.getContactNumber());
-        clientSpEditor.putString("billingAddress", client.getBillingAddress());
-        clientSpEditor.putString("contactPersonName", client.getContactPersonName());
-        clientSpEditor.putString("contactPersonNumber", client.getContactPersonNumber());
-        clientSpEditor.putString("contactPersonEmail", client.getContactPersonEmail());
-        clientSpEditor.putString("createdDate", client.getCreatedDate());
-        clientSpEditor.putString("clientType", client.getClientType());
+        clientSpEditor.putString("email", charity.getEmail());
+        clientSpEditor.putString("password", charity.getPassword());
+        clientSpEditor.putString("phone", charity.getPhone());
+        clientSpEditor.putString("address", charity.getAddress());
+        clientSpEditor.putString("category", charity.getCategory());
         clientSpEditor.commit();
     }
 
     //Get rider data
-    public Rider getLogedInRider (){
+    public Donor getLoggedInRider () {
         String email = userDB.getString("email", "");
         String password = userDB.getString("password", "");
-        int id = userDB.getInt("id", 0);
-        int status = userDB.getInt("status", 0);
-        String name = userDB.getString("name", "");
-        String bikeNumber = userDB.getString("bikeNumber", "");
-        String contactNumber = userDB.getString("contactNumber", "");
-        String profilePicture = userDB.getString("profilePicture", "");
+        String phone = userDB.getString("phone", "");
+        String address = userDB.getString("address", "");
+        String category = userDB.getString("category", "");
 
-        Rider rider = new Rider(email, password);
-        rider.setId(id);
-        rider.setName(name);
-        rider.setBikeNumber(bikeNumber);
-        rider.setContactNumber(contactNumber);
-        rider.setProfilePicture(profilePicture);
-        rider.setStatus(status);
+        Donor donor = new Donor(email, password);
+        donor.setPhone(phone);
+        donor.setAddress(address);
+        donor.setCategory(category);
 
-        return rider;
+        return donor;
     }
 
     //Get client data
-    public Client getLogedInClient (){
-        int id = userDB.getInt("id", 0);
+    public Charity getLoggedInClient (){
         String email = userDB.getString("email", "");
         String password = userDB.getString("password", "");
-        String comapnyName = userDB.getString("comapnyName", "");
-        String companyPostalCode = userDB.getString("companyPostalCode", "");
-        String companyUnitNumber = userDB.getString("companyUnitNumber", "");
-        String location = userDB.getString("location", "");
-        String contactNumber = userDB.getString("contactNumber", "");
-        String billingAddress = userDB.getString("billingAddress", "");
-        String contactPersonName = userDB.getString("contactPersonName", "");
-        String contactPersonNumber = userDB.getString("contactPersonNumber", "");
-        String contactPersonEmail = userDB.getString("contactPersonEmail", "");
-        String createdDate = userDB.getString("createdDate", "");
-        String clientType = userDB.getString("clientType", "");
+        String phone = userDB.getString("phone", "");
+        String address = userDB.getString("address", "");
+        String category = userDB.getString("category", "");
 
-        //Create Client and put client data
-        Client client = new Client();
+        //Create Charity and put charity data
+        Charity charity = new Charity();
 
-        client.setId(id);
-        client.setEmail(email);
-        client.setPassword(password);
-        client.setCompanyName(comapnyName);
-        client.setCompanyPostalCode(companyPostalCode);
-        client.setCompanyUnitNumber(companyUnitNumber);
-        client.setLocation(location);
-        client.setBillingAddress(billingAddress);
-        client.setContactNumber(contactNumber);
-        client.setContactPersonName(contactPersonName);
-        client.setContactPersonEmail(contactPersonEmail);
-        client.setContactPersonNumber(contactPersonNumber);
-        client.setCreatedDate(createdDate);
-        client.setClientType(clientType);
+        charity.setEmail(email);
+        charity.setPassword(password);
+        charity.setPhone(phone);
+        charity.setAddress(address);
+        charity.setCategory(category);
 
-        return client;
+        return charity;
     }
 
-    //Set Login Rider
+    //Set Login Donor
     public void setRiderLoggedIn(boolean loggedIn){
         SharedPreferences.Editor riderSpEditor = userDB.edit();
         riderSpEditor.putBoolean("loggedIn", loggedIn);
@@ -116,7 +80,7 @@ public class UserLocalStore {
         riderSpEditor.commit();
     }
 
-    //Set Login Client
+    //Set Login Charity
     public void setClientLoggedIn(boolean loggedIn){
         SharedPreferences.Editor clientSpEditor = userDB.edit();
         clientSpEditor.putBoolean("loggedIn", loggedIn);
@@ -156,7 +120,7 @@ public class UserLocalStore {
         clientSpEditor.commit();
     }
 
-    //Set Login Rider
+    //Set Login Donor
     public String loggedInUser(){
         String user = userDB.getString("user", "");
         return  user;

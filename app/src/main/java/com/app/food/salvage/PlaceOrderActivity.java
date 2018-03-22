@@ -3,10 +3,7 @@ package com.app.food.salvage;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -72,8 +69,8 @@ public class PlaceOrderActivity extends AppCompatActivity implements AdapterView
         connectivityDetector = new ConnectivityDetector(ctx);
 
         UserLocalStore userLocalStore = new UserLocalStore(this);
-        final Client loggedInClient = userLocalStore.getLogedInClient();
-        final int loggedInClientId = loggedInClient.getId();
+        final Charity loggedInCharity = userLocalStore.getLoggedInClient();
+        final int loggedInClientId = loggedInCharity.getId();
         final int maxLengthOfPostCode = 6;
 
         //Loading outlets
@@ -116,7 +113,7 @@ public class PlaceOrderActivity extends AppCompatActivity implements AdapterView
                     Toast.makeText(PlaceOrderActivity.this, "Please fill-up  all fields", Toast.LENGTH_SHORT).show();
 
                 }else{
-                    sendOrderToRider(loggedInClient, selectedOutlet, pickupDateTime, deliverDateTime, mobileNumber, customerName, postalCode,
+                    sendOrderToRider(loggedInCharity, selectedOutlet, pickupDateTime, deliverDateTime, mobileNumber, customerName, postalCode,
                            address, unitNumberFirst, unitNumberLast, foodCost, receiptNumber);
                     //sendOrderToRider();
                 }
@@ -158,13 +155,13 @@ public class PlaceOrderActivity extends AppCompatActivity implements AdapterView
         // Tag used to cancel the request
         String tag_string_req = "req_login";
         UserLocalStore userLocalStore = new UserLocalStore(ctx);
-        Client loggedInClient = userLocalStore.getLogedInClient();
-        final int loggedInClientId = loggedInClient.getId();
-        final String loggedInClientName = loggedInClient.getCompanyName();
+        Charity loggedInCharity = userLocalStore.getLoggedInClient();
+        final int loggedInClientId = loggedInCharity.getId();
+        final String loggedInClientName = loggedInCharity.getEmail();
 
         String serverAddress = "http://dev.intaresta.com/food/rest_controller/get_all_outlet_by_client_id/"+loggedInClientId;
 
-        Toast.makeText(ctx,"Client ID : "+loggedInClientId, Toast.LENGTH_LONG).show();
+        Toast.makeText(ctx,"Charity ID : "+loggedInClientId, Toast.LENGTH_LONG).show();
 
         pDialog.setMessage("Please Wait....");
         pDialog.setTitle("Proccessing");
@@ -310,8 +307,8 @@ public class PlaceOrderActivity extends AppCompatActivity implements AdapterView
 
     //Send order to rider
     //public void sendOrderToRider(){
-    public void sendOrderToRider(Client loggedInClient, Outlet outlet, String npickupDateTime, String ndeliverDateTime, String nmobileNumber, String ncustomerName,
-                                String npostalCode, String naddress, String nunitNumberFirst, String nunitNumberLast, String nfoodCost, String nreceiptNumber){
+    public void sendOrderToRider(Charity loggedInCharity, Outlet outlet, String npickupDateTime, String ndeliverDateTime, String nmobileNumber, String ncustomerName,
+                                 String npostalCode, String naddress, String nunitNumberFirst, String nunitNumberLast, String nfoodCost, String nreceiptNumber){
         // Tag used to cancel the request
         String tag_string_req = "req_login";
 
@@ -324,10 +321,10 @@ public class PlaceOrderActivity extends AppCompatActivity implements AdapterView
         pDialog.setCancelable(false);
         showDialog();
 
-        Toast.makeText(ctx, "Client ID: "+loggedInClient.getId(), Toast.LENGTH_LONG).show();
+        Toast.makeText(ctx, "Charity ID: "+ loggedInCharity.getId(), Toast.LENGTH_LONG).show();
 
         Map<String, String> params = new HashMap<String, String>();
-        params.put("client_id", Integer.toString(loggedInClient.getId()));
+        params.put("client_id", Integer.toString(loggedInCharity.getId()));
         params.put("outlet_id", Integer.toString(outlet.getId()));
         params.put("outlet_name", outlet.getName());
         params.put("outlet_type", Integer.toString(outlet.getType()));

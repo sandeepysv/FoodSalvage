@@ -6,10 +6,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -39,7 +36,7 @@ public class ClientDashboardActivity extends AppCompatActivity {
     private ProgressDialog pDialog;
     ConnectivityDetector connectivityDetector;
     UserLocalStore sessionManager;
-    Client loggedInClient;
+    Charity loggedInCharity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +47,7 @@ public class ClientDashboardActivity extends AppCompatActivity {
         btnPlaceOrder= (Button) findViewById(R.id.btnPlaceOrder);
 
         sessionManager = new UserLocalStore(ctx);
-        loggedInClient = sessionManager.getLogedInClient();
+        loggedInCharity = sessionManager.getLoggedInClient();
         projectNumber = "1051391508793";
 
         // Progress dialog
@@ -134,7 +131,7 @@ public class ClientDashboardActivity extends AppCompatActivity {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
 
-        String serverAddress = "http://dev.intaresta.com/food/rest_controller/register_client_device/"+loggedInClient.getId()+"/"+deviceRegIdForGCM;
+        String serverAddress = "http://dev.intaresta.com/food/rest_controller/register_client_device/"+ loggedInCharity.getId()+"/"+deviceRegIdForGCM;
 
         Map<String, String> params = new HashMap<String, String>();
 

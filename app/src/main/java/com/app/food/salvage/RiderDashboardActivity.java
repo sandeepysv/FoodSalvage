@@ -39,7 +39,7 @@ public class RiderDashboardActivity extends AppCompatActivity {
     private ProgressDialog pDialog;
     ConnectivityDetector connectivityDetector;
     UserLocalStore sessionManager;
-    Rider loggedInRider;
+    Donor loggedInDonor;
     TextView tvRiderProfileLoginTime, tvRiderProfileLocation, tvRiderProfileOrder, btnProfileLoginTime,
             btnProfileDuty, btnProfileOrder;
 
@@ -60,8 +60,8 @@ public class RiderDashboardActivity extends AppCompatActivity {
         btnProfileOrder = (TextView) findViewById(R.id.btnProfileOrder);
 
         sessionManager = new UserLocalStore(ctx);
-        loggedInRider = sessionManager.getLogedInRider();
-        projectNumber = "1051391508793";
+        loggedInDonor = sessionManager.getLoggedInRider();
+//        projectNumber = "1051391508793";
 
         // Progress dialog
         pDialog = new ProgressDialog(this);
@@ -76,44 +76,44 @@ public class RiderDashboardActivity extends AppCompatActivity {
         ssLocationManager.setLocationManagerAndListener();
 
         pDialog.setMessage("Please Wait....");
-        pDialog.setTitle("Proccessing");
+        pDialog.setTitle("Processing");
         pDialog.setCancelable(false);
         showDialog();
 
         //Background Task for registering
-        new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] params) {
-
-                try {
-                    if(gcm == null){
-                        gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
-                    }
-
-
-                    deviceRegIdForGCM = gcm.register(projectNumber);
-
-                    if(!deviceRegIdForGCM.isEmpty()){
-                        registerRiderDevice( deviceRegIdForGCM );
-                        //Toast.makeText(getApplicationContext(), "Device Registered : "+deviceRegIdForGCM, Toast.LENGTH_LONG).show();
-                    }else{
-                        // Toast.makeText(getApplicationContext(), "Device Registration Failed: "+deviceRegIdForGCM, Toast.LENGTH_LONG).show();
-                    }
-
-                } catch (IOException e) {
-                    //Toast.makeText(getApplicationContext(), "IOException", Toast.LENGTH_LONG).show();
-                }
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Object o) {
-                super.onPostExecute(o);
-                hideDialog();
-            }
-        }.execute(null,null,null);
-        //End of registering rider device
+//        new AsyncTask() {
+//            @Override
+//            protected Object doInBackground(Object[] params) {
+//
+//                try {
+//                    if(gcm == null){
+//                        gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
+//                    }
+//
+//
+//                    deviceRegIdForGCM = gcm.register(projectNumber);
+//
+//                    if(!deviceRegIdForGCM.isEmpty()){
+//                        registerRiderDevice( deviceRegIdForGCM );
+//                        //Toast.makeText(getApplicationContext(), "Device Registered : "+deviceRegIdForGCM, Toast.LENGTH_LONG).show();
+//                    }else{
+//                        // Toast.makeText(getApplicationContext(), "Device Registration Failed: "+deviceRegIdForGCM, Toast.LENGTH_LONG).show();
+//                    }
+//
+//                } catch (IOException e) {
+//                    //Toast.makeText(getApplicationContext(), "IOException", Toast.LENGTH_LONG).show();
+//                }
+//
+//                return null;
+//            }
+//
+//            @Override
+//            protected void onPostExecute(Object o) {
+//                super.onPostExecute(o);
+//                hideDialog();
+//            }
+//        }.execute(null,null,null);
+//        //End of registering rider device
 
         //Change rider profile state when toggle button is clicked
         tbRiderStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -138,7 +138,7 @@ public class RiderDashboardActivity extends AppCompatActivity {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
 
-        String serverAddress = "http://dev.intaresta.com/food/rest_controller/register_rider_device/"+loggedInRider.getId()+"/"+deviceRegIdForGCM;
+        String serverAddress = "http://dev.intaresta.com/food/rest_controller/register_rider_device/"+ loggedInDonor.getId()+"/"+deviceRegIdForGCM;
 
         Map<String, String> params = new HashMap<String, String>();
 
@@ -187,11 +187,11 @@ public class RiderDashboardActivity extends AppCompatActivity {
         final String[] tag_string_req = {"req_login"};
 
         pDialog.setMessage("Please Wait....");
-        pDialog.setTitle("Proccessing");
+        pDialog.setTitle("Processing");
         pDialog.setCancelable(false);
         showDialog();
 
-        String serverAddress = "http://dev.intaresta.com/food/rest_controller/get_rider_status/"+loggedInRider.getId();
+        String serverAddress = "http://dev.intaresta.com/food/rest_controller/get_rider_status/"+ loggedInDonor.getId();
 
         Map<String, String> params = new HashMap<String, String>();
 
@@ -259,7 +259,7 @@ public class RiderDashboardActivity extends AppCompatActivity {
         pDialog.setCancelable(false);
         showDialog();
 
-        String serverAddress = "http://dev.intaresta.com/food/rest_controller/set_rider_status/"+loggedInRider.getId()+"/"+status;
+        String serverAddress = "http://dev.intaresta.com/food/rest_controller/set_rider_status/"+ loggedInDonor.getId()+"/"+status;
 
         Map<String, String> params = new HashMap<String, String>();
 

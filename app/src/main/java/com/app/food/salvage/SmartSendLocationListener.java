@@ -67,8 +67,8 @@ public class SmartSendLocationListener implements LocationListener {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
         UserLocalStore userLocalStore = new UserLocalStore(ctx);
-        Rider loggedInRider = userLocalStore.getLogedInRider();
-        int loggedInRiderId = loggedInRider.getId();
+        Donor loggedInDonor = userLocalStore.getLoggedInRider();
+        int loggedInRiderId = loggedInDonor.getId();
 
         String serverAddress = "http://dev.intaresta.com/food/rest_controller/change_rider_location/"+loggedInRiderId+"/"+lat+"/"+lng;
 

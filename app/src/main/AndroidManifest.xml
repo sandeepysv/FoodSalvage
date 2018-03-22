@@ -24,7 +24,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.app.food.salvage.WelcomeActivity"
+            android:name=".WelcomeActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -34,25 +34,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.app.food.salvage.LoginActivity"
+            android:name=".LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.app.food.salvage.ClientDashboardActivity"
+            android:name=".ClientDashboardActivity"
             android:label="@string/title_activity_client_dash_board"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.app.food.salvage.RiderDashboardActivity"
+            android:name=".RiderDashboardActivity"
             android:label="@string/title_activity_rider_dashboard"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.app.food.salvage.PlaceOrderActivity"
+            android:name=".PlaceOrderActivity"
             android:label="@string/title_activity_place_order"
             android:theme="@style/AppTheme" />
 
         <receiver
-            android:name="com.app.food.salvage.GCMReceiver"
+            android:name=".GCMReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
 
@@ -65,20 +65,22 @@
             </intent-filter>
         </receiver>
 
-        <service android:name="com.app.food.salvage.GCMMessageHandler" />
+        <service android:name=".GCMMessageHandler" />
 
         <activity
-            android:name="com.app.food.salvage.OrderDetailsForRiderActivity"
+            android:name=".OrderDetailsForRiderActivity"
             android:label="@string/title_activity_order_details_for_rider"
             android:theme="@style/AppTheme" />
         <activity
-            android:name="com.app.food.salvage.AcceptedOrderActivity"
+            android:name=".AcceptedOrderActivity"
             android:label="@string/title_activity_accepted_rider"
             android:theme="@style/AppTheme" />
         <activity
-            android:name="com.app.food.salvage.OrderFailedActivity"
+            android:name=".OrderFailedActivity"
             android:label="@string/title_activity_order_failed"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".SignUp" />
+        <activity android:name=".Dashboard"></activity>
     </application>
 
 </manifest>

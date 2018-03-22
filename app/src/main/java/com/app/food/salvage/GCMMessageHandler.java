@@ -73,7 +73,7 @@ public class GCMMessageHandler extends IntentService {
 
                 }
 
-                //Getting Available  Rider List
+                //Getting Available  Donor List
                 //  if(totalRiderIndex > 0){
                 int[] riderId = new int[totalRiderIndex];
                 String[] riderName = new String[totalRiderIndex];
@@ -133,7 +133,7 @@ public class GCMMessageHandler extends IntentService {
                 nIntent.putExtra("total_rider_index", (int) totalRiderIndex);
                 nIntent.putExtra("unique_notification_id", uniqueNotificationId);
 
-                //Binding Rider Data
+                //Binding Donor Data
                 for(int i=0; i<totalRiderIndex; i++){
                     nIntent.putExtra("rider_id_" +i, riderId[i]);
                     nIntent.putExtra("rider_name_" +i, riderName[i]);
@@ -176,7 +176,7 @@ public class GCMMessageHandler extends IntentService {
                 //Getting current rider and available rider index
                 int uniqueNotificationIdForClient = (int) (System.currentTimeMillis() & 0xfffffff);
 
-                Toast.makeText(getApplicationContext(), "Accepted Rider ID : "+accreptedRiderId, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Accepted Donor ID : "+accreptedRiderId, Toast.LENGTH_LONG).show();
 
                 //Notification
                 cNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -267,7 +267,7 @@ public class GCMMessageHandler extends IntentService {
 
     private void sendNotification(String msg) {
 
-        Log.d("Notification To Rider", "Notification sent successfully.");
+        Log.d("Notification To Donor", "Notification sent successfully.");
     }
 }
 
