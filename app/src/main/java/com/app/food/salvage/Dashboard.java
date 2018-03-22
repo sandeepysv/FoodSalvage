@@ -114,7 +114,6 @@ public class Dashboard extends AppCompatActivity {
                                         phone.setText("");
                                         region.setText("");
                                         fresh.setText("");
-                                        phone.setFocusable(true);
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
