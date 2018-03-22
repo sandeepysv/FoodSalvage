@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
     Drawable resizedImage;
     Button btnLoginSubmit,btnSignUp;
     private ProgressDialog pDialog;
-    String userEmail, userPassword;
+    String userEmail, userPassword, userCategory;
     int checkedUserId;
     ConnectivityDetector connectivityDetector;
 
@@ -73,17 +73,17 @@ public class LoginActivity extends AppCompatActivity {
         pDialog.setCancelable(false);
 
         //Check Already Logged in User
-        UserLocalStore sessionManager = new UserLocalStore(this);
-        if(sessionManager.loggedInUser() == "donor" && sessionManager.isRiderLoggedIn()) {
-            Intent goRiderProfileActivity = new Intent(LoginActivity.this, RiderDashboardActivity.class);
-            startActivity(goRiderProfileActivity);
-            finish();
-        }
-        else if(sessionManager.loggedInUser() == "charity" && sessionManager.isClientLoggedIn()) {
-            Intent goClientProfileActivity = new Intent(LoginActivity.this, ClientDashboardActivity.class);
-            startActivity(goClientProfileActivity);
-            finish();
-        }
+//        UserLocalStore sessionManager = new UserLocalStore(this);
+//        if(sessionManager.loggedInUser() == "donor" && sessionManager.isRiderLoggedIn()) {
+//            Intent goRiderProfileActivity = new Intent(LoginActivity.this, RiderDashboardActivity.class);
+//            startActivity(goRiderProfileActivity);
+//            finish();
+//        }
+//        else if(sessionManager.loggedInUser() == "charity" && sessionManager.isClientLoggedIn()) {
+//            Intent goClientProfileActivity = new Intent(LoginActivity.this, ClientDashboardActivity.class);
+//            startActivity(goClientProfileActivity);
+//            finish();
+//        }
 
         //Change button color when click
         btnLoginSubmit.setOnTouchListener(new OnTouchListener() {
@@ -121,9 +121,10 @@ public class LoginActivity extends AppCompatActivity {
                     checkedUserId = rbgUserType.getCheckedRadioButtonId();
                     connectivityDetector = new ConnectivityDetector(getBaseContext());
 
-                    if(checkedUserId == R.id.rbDonor){
+                    if(checkedUserId == R.id.rbDonor) {
                         if(connectivityDetector.checkConnectivityStatus()){
                             Toast.makeText(LoginActivity.this, "Donor", Toast.LENGTH_SHORT).show();
+                            userCategory = "Donor";
                             checkRiderLogin(userEmail, userPassword);
                         }
                         else{
@@ -134,8 +135,9 @@ public class LoginActivity extends AppCompatActivity {
                     else
                         if(checkedUserId == R.id.rbCharity) {
                             if(connectivityDetector.checkConnectivityStatus()) {
-                                checkClientLogin(userEmail, userPassword);
                                 Toast.makeText(LoginActivity.this, "Charity", Toast.LENGTH_SHORT).show();
+                                userCategory = "Charity";
+                                checkRiderLogin(userEmail, userPassword);
                             }
                             else {
                                 connectivityDetector.showAlertDialog(LoginActivity.this, "Login Failed","No Internet Connection");
@@ -169,7 +171,7 @@ public class LoginActivity extends AppCompatActivity {
 
     } //End of onCreate
 
-    //Check Donor Login
+    //Check Login
     private void checkRiderLogin(final String email, final String password) {
 
         String serverAddress = "http://192.168.43.214/foodsalvage/log_in/index.php";
@@ -207,7 +209,16 @@ public class LoginActivity extends AppCompatActivity {
                         userLocalStore.storeClientData(loggedInCharity);
                         userLocalStore.setClientLoggedIn(true);
 
-                        goRiderDashboardActivity();
+                        if(checkedUserId == R.id.rbDonor) {
+                            Intent intent = new Intent(LoginActivity.this, Dashboard.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                        else if(checkedUserId == R.id.rbCharity) {
+                            Intent intent = new Intent(LoginActivity.this, charityDashboard.class);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -229,104 +240,11 @@ public class LoginActivity extends AppCompatActivity {
                 Map<String,String> params = new HashMap<String, String>();
                 params.put("email",userEmail);
                 params.put("password",userPassword);
+                params.put("category",userCategory);
                 return params;
             }
         };
         MySingleton.getInstance(LoginActivity.this).addToRequestque(checkRiderRequest);
-    }
-
-    //Check Charity Login
-    private void checkClientLogin(final String email, final String password) {
-        // Tag used to cancel the request
-        String tag_string_req = "req_login";
-        String eEmail = null;
-        String ePassword = null;
-        try {
-            eEmail = URLEncoder.encode(email, "UTF-8");
-            ePassword = URLEncoder.encode(password, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        String serverAddress = "http://localhost/foodsalvage/check_charity/"+eEmail+"/"+ePassword;
-
-        pDialog.setMessage("Please Wait....");
-        pDialog.setTitle("Processing");
-        pDialog.setCancelable(false);
-        showDialog();
-
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("email", email);
-        params.put("password", password);
-
-        JsonObjectRequest checkClientRequest = new JsonObjectRequest(Request.Method.POST,
-                serverAddress, new JSONObject(params), new Response.Listener<JSONObject>() {
-
-            @Override
-            public void onResponse(JSONObject jObj) {
-                // Log.d("Login Response", "Login Response: " + response.toString());
-                hideDialog();
-
-                try {
-
-                    //JSONObject jObj = response.getJSONObject(1);
-                    boolean error = jObj.getBoolean("error");
-
-                    // Check for error node in json
-                    if (!error) {
-                        // user successfully logged in
-                        String email = jObj.getString("email");
-                        String password = jObj.getString("password");
-                        String phone = jObj.getString("phone");
-                        String address = jObj.getString("address");
-                        String category = jObj.getString("category");
-
-                        Toast.makeText(getApplicationContext(),
-                                "Charity : "+email,  Toast.LENGTH_LONG).show();
-
-                        //Entering rider data to rider object
-                        Charity loggedInCharity = new Charity();
-                        loggedInCharity.setEmail(email);
-                        loggedInCharity.setPassword(password);
-                        loggedInCharity.setPhone(phone);
-                        loggedInCharity.setAddress(address);
-                        loggedInCharity.setCategory(category);
-
-                        UserLocalStore userLocalStore = new UserLocalStore(LoginActivity.this);
-                        userLocalStore.storeClientData(loggedInCharity);
-                        userLocalStore.setClientLoggedIn(true);
-
-                        // Launch Charity dashboard  activity
-                        goClientDashboardActivity();
-                    } else {
-                        //int i=0;
-                        // Error in login. Get the error message
-                        String errorMsg = jObj.getString("error_message");
-                        Toast.makeText(getApplicationContext(),
-                                "Error Message : "+errorMsg,  Toast.LENGTH_LONG).show();
-                    }
-                } catch (JSONException e) {
-                    // JSON error
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Json catch error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("Login Error", "Login Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        " Error Response: "+ error.getMessage(), Toast.LENGTH_LONG).show();
-                hideDialog();
-            }
-        });
-
-        // Adding request to request queue
-        //AppController.getInstance().addToRequestQueue(strReq);
-        Volley.newRequestQueue(this).add(checkClientRequest);
-
     }
 
     //Show Dialog
@@ -339,23 +257,6 @@ public class LoginActivity extends AppCompatActivity {
     private void hideDialog() {
         if (pDialog.isShowing())
             pDialog.dismiss();
-    }
-
-
-    //Go Donor Dashboard Activity
-    public void goRiderDashboardActivity(){
-        Intent intent = new Intent(LoginActivity.this,
-                Dashboard.class);
-        startActivity(intent);
-        finish();
-    }
-
-    //Go Charity Dashboard Activity
-    public void goClientDashboardActivity(){
-        Intent intent = new Intent(LoginActivity.this,
-                ClientDashboardActivity.class);
-        startActivity(intent);
-        finish();
     }
 
 } //End of activity

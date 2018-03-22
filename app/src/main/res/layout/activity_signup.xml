@@ -121,12 +121,12 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/etSignUpAddress"
                 android:gravity="center"
-                android:checkedButton="@+id/rbDonor"
+                android:checkedButton="@+id/rbSignUpDonor"
                 android:orientation="horizontal"
                 android:dividerPadding="10dp">
 
                 <RadioButton
-                    android:id="@+id/rbDonor"
+                    android:id="@+id/rbSignUpDonor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Donor"
@@ -136,7 +136,7 @@
                     tools:ignore="HardcodedText,RtlHardcoded,RtlSymmetry" />
 
                 <RadioButton
-                    android:id="@+id/rbCharity"
+                    android:id="@+id/rbSignUpCharity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Charity"

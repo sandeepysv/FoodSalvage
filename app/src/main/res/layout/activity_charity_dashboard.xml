@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.app.food.salvage.charityDashboard"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:id="@+id/lyTitleBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#ffffff"
+            android:gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            tools:ignore="UselessParent">
+
+            <TextView
+                android:id="@+id/tvTitleOrderNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/icon_circle_title"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="#ffffff"
+                android:textSize="17pt"
+                android:padding="0dp"
+                android:layout_marginRight="5dp"
+                tools:ignore="HardcodedText,RtlHardcoded" />
+
+            <TextView
+                android:id="@+id/tvTitleDeliverText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Food Salvage \nDelivered Today"
+                android:textSize="8.4pt"
+                android:textColor="#5B6B7C"
+                android:gravity="left"
+                android:layout_marginLeft="5dp"
+                tools:ignore="HardcodedText,RtlHardcoded" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:layout_gravity="center"
+                android:layout_marginRight="0dp">
+
+                <ImageView
+                    android:layout_marginTop="2dp"
+                    android:id="@+id/ivTitleLogo"
+                    android:layout_width="90dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/fs" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_profile"
+            android:paddingTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvProfileWelcome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Welcome"
+                android:textAlignment="center"
+                android:textColor="#fff"
+                android:textSize="8.77pt"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/tvProfileName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/tvProfileWelcome"
+                android:text="Name"
+                android:textAlignment="center"
+                android:textColor="#fff"
+                android:textSize="12.02pt"
+                tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+
+            <TextView
+                android:id="@+id/tvNotify"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:text="No Food Post Available Right now."
+                android:textAlignment="center"
+                android:textColor="#fff"
+                android:textSize="18sp"
+                tools:ignore="HardcodedText,ObsoleteLayoutParam" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_gravity="end"
+                android:layout_marginBottom="11dp"
+                android:text="* We will notify you when there are any available Food Posts"
+                android:textAlignment="center"
+                android:textColor="#fff"
+                tools:ignore="HardcodedText" />
+        </RelativeLayout>
+
+    </ScrollView>
+
+</LinearLayout>

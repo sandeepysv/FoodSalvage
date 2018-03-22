@@ -80,7 +80,8 @@
             android:label="@string/title_activity_order_failed"
             android:theme="@style/AppTheme" />
         <activity android:name=".SignUp" />
-        <activity android:name=".Dashboard"></activity>
+        <activity android:name=".Dashboard" />
+        <activity android:name=".charityDashboard"></activity>
     </application>
 
 </manifest>

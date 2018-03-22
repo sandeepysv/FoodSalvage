@@ -33,7 +33,7 @@ public class SignUp extends AppCompatActivity {
     RadioGroup cat;
     int checkedUserId;
     AlertDialog.Builder builder;
-    String reg_url = "http://10.50.36.200/foodsalvage/sign_up/index.php";
+    String reg_url = "http://192.168.43.214/foodsalvage/sign_up/index.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +49,6 @@ public class SignUp extends AppCompatActivity {
         address = (EditText) findViewById(R.id.etSignUpAddress);
         cat = (RadioGroup) findViewById(R.id.rbgSignUpUserType);
         builder = new AlertDialog.Builder(SignUp.this);
-        checkedUserId = cat.getCheckedRadioButtonId();
 
         btnBack.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -92,11 +91,15 @@ public class SignUp extends AppCompatActivity {
                 cpw = cpass.getText().toString();
                 ph = phone.getText().toString();
                 add = address.getText().toString();
-                if(checkedUserId == R.id.rbDonor) {
+                checkedUserId = cat.getCheckedRadioButtonId();
+
+                if(checkedUserId == R.id.rbSignUpDonor) {
                     ca = "Donor";
+                    Toast.makeText(SignUp.this, "Category : "+ca, Toast.LENGTH_SHORT).show();
                 }
-                else if(checkedUserId == R.id.rbCharity) {
+                else if(checkedUserId == R.id.rbSignUpCharity) {
                     ca = "Charity";
+                    Toast.makeText(SignUp.this, "Category : "+ca, Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -123,7 +126,6 @@ public class SignUp extends AppCompatActivity {
                     Toast.makeText(SignUp.this, "Passwords doesn't Match", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(SignUp.this, "Registered!", Toast.LENGTH_SHORT).show();
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, reg_url, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
