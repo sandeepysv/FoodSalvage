@@ -135,6 +135,7 @@ public class Dashboard extends AppCompatActivity {
                                 params.put("phone",ph);
                                 params.put("region",re);
                                 params.put("fresh",fre);
+                                params.put("status","0");
                                 return params;
                             }
                         };
