@@ -92,19 +92,6 @@
                 tools:ignore="HardcodedText" />
 
             <TextView
-                android:id="@+id/tvProfileName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/tvProfileWelcome"
-                android:text="Name"
-                android:textAlignment="center"
-                android:textColor="#fff"
-                android:textSize="12.02pt"
-                tools:ignore="HardcodedText,ObsoleteLayoutParam" />
-
-            <TextView
                 android:id="@+id/tvDetails"
                 android:layout_marginTop="50dp"
                 android:layout_width="match_parent"
