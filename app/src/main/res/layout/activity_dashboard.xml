@@ -137,19 +137,36 @@
 
             <EditText
                 android:id="@+id/etRegion"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/etPhone"
+                android:layout_marginBottom="5dp"
+                android:layout_toLeftOf="@+id/btnLocation"
+                android:layout_toStartOf="@+id/btnLocation"
                 android:drawablePadding="15dp"
-                android:hint="Food Available Region"
-                android:textSize="12sp"
-                android:textColorHint="#AFAEAE"
-                android:textColor="#AFAEAE"
-                android:inputType="textPostalAddress"
+                android:hint="\nFood Available Region"
                 android:paddingBottom="15dp"
                 android:paddingLeft="30dp"
-                android:layout_marginBottom="5dp"
-                android:layout_below="@+id/etPhone"
+                android:textColor="#AFAEAE"
+                android:textColorHint="#AFAEAE"
+                android:textSize="12sp"
                 tools:ignore="HardcodedText,RtlHardcoded,RtlSymmetry" />
+
+            <Button
+                android:id="@+id/btnLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/etRegion"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/etPhone"
+                android:background="#913a05"
+                android:padding="8dp"
+                android:text="Get Location"
+                android:textColor="#ffffff"
+                tools:ignore="HardcodedText" />
 
             <EditText
                 android:id="@+id/etFresh"
@@ -180,7 +197,6 @@
                 android:textColor="#ffffff"
                 android:textSize="16sp"
                 tools:ignore="HardcodedText" />
-
 
         </RelativeLayout>
 
