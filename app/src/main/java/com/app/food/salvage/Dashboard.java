@@ -1,7 +1,11 @@
 package com.app.food.salvage;
 
+import android.*;
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -38,13 +42,13 @@ import java.util.Map;
 
 public class Dashboard extends AppCompatActivity {
 
-    TextView email;
+    public static final int REQUEST_LOCATION = 1;
     EditText phone, fresh, region;
     String ph, re, fre;
     Button make, loc;
     Geocoder geocoder;
     List<Address> addresses;
-    Double lat = 18.984920,lon = 72.822278;
+    Double lat = 17.4722205, lon = 78.5632572;
     private ProgressDialog pDialog;
     private LocationManager locationManager;
     private LocationListener locationListener;
@@ -56,7 +60,8 @@ public class Dashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        email = (TextView) findViewById(R.id.tvProfileName);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+
         phone = (EditText) findViewById(R.id.etPhone);
         region = (EditText) findViewById(R.id.etRegion);
         fresh = (EditText) findViewById(R.id.etFresh);
@@ -64,11 +69,10 @@ public class Dashboard extends AppCompatActivity {
         loc = (Button) findViewById(R.id.btnLocation);
 
         geocoder = new Geocoder(this, Locale.getDefault());
+
         // Progress Dialog
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
-
-        email.setText("Donor");
 
         make.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -182,21 +186,44 @@ public class Dashboard extends AppCompatActivity {
         loc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(Dashboard.this, "Pressed!", Toast.LENGTH_SHORT).show();
+                locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    Toast.makeText(Dashboard.this, "Turn on your GPS!", Toast.LENGTH_SHORT).show();
+                }
+                else if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    getLocation();
+                }
                 try {
                     addresses = geocoder.getFromLocation(lat,lon,1);
                     String address = addresses.get(0).getAddressLine(0);
-                    String area = addresses.get(0).getLocality();
-                    String city = addresses.get(0).getAdminArea();
-                    String country = addresses.get(0).getCountryName();
-
-                    String fulladdress = address+", "+area+", "+city+", "+country;
-                    region.setText(fulladdress);
+                    region.setText(address);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         });
+
+    }
+
+    private void getLocation() {
+        if(ActivityCompat.checkSelfPermission(Dashboard.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(Dashboard.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(Dashboard.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+
+        }
+        else {
+            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+            if(location != null) {
+                lat = location.getLatitude();
+                lon = location.getLongitude();
+            }
+            else {
+                Toast.makeText(Dashboard.this, "Unable to Trace your Location!", Toast.LENGTH_SHORT).show();
+            }
+        }
 
     }
 
