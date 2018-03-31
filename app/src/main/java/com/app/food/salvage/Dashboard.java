@@ -108,7 +108,7 @@ public class Dashboard extends AppCompatActivity {
                     connectivityDetector = new ConnectivityDetector(getBaseContext());
 
                     if(connectivityDetector.checkConnectivityStatus()){
-                        Toast.makeText(Dashboard.this, "Food Post Added!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Dashboard.this, "Food Posts Added!", Toast.LENGTH_SHORT).show();
                         String serverAddress = "http://192.168.43.214/foodsalvage/food_post/index.php";
 
                         pDialog.setMessage("Please Wait....");
@@ -128,10 +128,10 @@ public class Dashboard extends AppCompatActivity {
                                     JSONObject jsonObject = jsonArray.getJSONObject(0);
                                     String code = jsonObject.getString("code");
                                     if(code.equals("post_failed")) {
-                                        Toast.makeText(Dashboard.this, "Adding Food Post Failed!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(Dashboard.this, "Adding Food Posts Failed!", Toast.LENGTH_SHORT).show();
                                     }
                                     else {
-                                        Toast.makeText(Dashboard.this, "Food Post Added!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(Dashboard.this, "Food Posts Added!", Toast.LENGTH_SHORT).show();
                                         phone.setText("");
                                         region.setText("");
                                         fresh.setText("");
@@ -163,7 +163,7 @@ public class Dashboard extends AppCompatActivity {
                         MySingleton.getInstance(Dashboard.this).addToRequestque(checkRiderRequest);
                     }
                     else{
-                        connectivityDetector.showAlertDialog(Dashboard.this, "Food Post adding Failed","No Internet Connection");
+                        connectivityDetector.showAlertDialog(Dashboard.this, "Food Posts adding Failed","No Internet Connection");
                     }
 
                 }
